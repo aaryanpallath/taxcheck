@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Rate History</title><link rel="stylesheet" href="/style.css"></head>
+<body><main>
+<nav><a href="/">Invoice review</a><a href="/rates">Rates</a></nav>
+<h1>Rate history for <code th:text="${code}">0000</code></h1>
+<section>
+  <p th:if="${#lists.isEmpty(history)}" class="muted">No such location.</p>
+  <table th:unless="${#lists.isEmpty(history)}">
+    <tr><th>From</th><th>To</th><th>Name</th><th class="num">State</th><th class="num">Local</th><th class="num">Transit (RTA)</th><th class="num">Combined</th></tr>
+    <tr th:each="p : ${history}">
+      <td th:text="${p.from()}">d</td><td th:text="${p.to()}">d</td><td th:text="${p.name()}">n</td>
+      <td class="num" th:text="${#numbers.formatPercent(p.state(), 1, 2)}">0</td><td class="num" th:text="${#numbers.formatPercent(p.local(), 1, 2)}">0</td>
+      <td class="num" th:text="${#numbers.formatPercent(p.rta(), 1, 2)}">0</td><td class="num" th:text="${#numbers.formatPercent(p.combined(), 1, 2)}">0</td>
+    </tr>
+  </table>
+</section>
+</main></body></html>

@@ -1,0 +1,53 @@
+{
+  "invoices" : 3000,
+  "planted" : {
+    "CORRECT" : 2228,
+    "ROUNDING" : 85,
+    "STALE_RATE" : 137,
+    "ORIGIN_RATE" : 138,
+    "OTHER_JURISDICTION" : 121,
+    "TAX_ON_EXEMPT" : 127,
+    "NO_TAX" : 83,
+    "UNEXPLAINED" : 81
+  },
+  "invoices_with_material_errors" : 687,
+  "flagged" : 686,
+  "root_cause_correct" : 679,
+  "also_fit_another_cause" : 1,
+  "false_flags_on_correct_or_rounding" : 0,
+  "overcharged_refund_opportunity" : 375728.07,
+  "undercharged_use_tax_owed" : 223889.57,
+  "confusion_planted_to_diagnosed" : {
+    "CORRECT" : {
+      "CORRECT" : 2228
+    },
+    "NO_TAX" : {
+      "NO_TAX" : 83
+    },
+    "ORIGIN_RATE" : {
+      "ORIGIN_RATE" : 138
+    },
+    "OTHER_JURISDICTION" : {
+      "ORIGIN_RATE" : 7,
+      "OTHER_JURISDICTION" : 113,
+      "ROUNDING" : 1
+    },
+    "ROUNDING" : {
+      "ROUNDING" : 85
+    },
+    "STALE_RATE" : {
+      "STALE_RATE" : 137
+    },
+    "TAX_ON_EXEMPT" : {
+      "TAX_ON_EXEMPT" : 127
+    },
+    "UNEXPLAINED" : {
+      "UNEXPLAINED" : 81
+    }
+  },
+  "rate_data" : {
+    "rate_changes_2024_2026" : 416,
+    "locations" : 403,
+    "locations_that_changed" : 266
+  }
+}

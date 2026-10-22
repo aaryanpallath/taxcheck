@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Washington Rates</title><link rel="stylesheet" href="/style.css"></head>
+<body><main>
+<nav><a href="/">Invoice review</a><a href="/rates">Rates</a></nav>
+<h1>Washington sales tax rates</h1>
+<p class="muted">From the Department of Revenue's quarterly rate files, Q1 2024 to Q4 2026.</p>
+<section>
+  <p class="error" th:if="${error}" th:text="${error}">error</p>
+  <form method="get" action="/rates"><input type="text" name="q" th:value="${q}" placeholder="City, county or location code"> <button>Search</button></form>
+  <table th:unless="${#lists.isEmpty(results)}" style="margin-top:12px">
+    <tr><th>Location</th><th>Code</th><th class="num">Current rate</th><th>Since</th></tr>
+    <tr th:each="r : ${results}">
+      <td><a th:href="@{/rates/{c}(c=${r.code()})}" th:text="${r.name()}">place</a></td><td><code th:text="${r.code()}">0000</code></td>
+      <td class="num" th:text="${#numbers.formatPercent(r.combined(), 1, 2)}">0%</td><td th:text="${r.from()}">date</td>
+    </tr>
+  </table>
+</section>
+<section>
+  <h2>Recent rate changes</h2>
+  <table>
+    <tr><th>Effective</th><th>Location</th><th class="num">Was</th><th class="num">Now</th></tr>
+    <tr th:each="c : ${changes}">
+      <td th:text="${c.on()}">date</td><td><a th:href="@{/rates/{c}(c=${c.code()})}" th:text="${c.name()}">place</a></td>
+      <td class="num" th:text="${#numbers.formatPercent(c.oldRate(), 1, 2)}">0</td><td class="num" th:text="${#numbers.formatPercent(c.newRate(), 1, 2)}">0</td>
+    </tr>
+  </table>
+</section>
+</main></body></html>

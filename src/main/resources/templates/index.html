@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tax Review</title><link rel="stylesheet" href="/style.css"></head>
+<body><main>
+<nav><a href="/">Invoice review</a><a href="/rates">Rates</a></nav>
+<h1>Sales &amp; use tax review</h1>
+<p class="muted">Checks the tax on each purchase invoice against the Washington rate for the delivery location on the invoice date, and explains every difference.</p>
+
+<section>
+  <h2>Reviewed: <span th:text="${source}">sample</span></h2>
+  <div class="stats">
+    <div class="stat"><b th:text="${count}">0</b>invoices</div>
+    <div class="stat"><b class="over" th:text="${'$' + #numbers.formatDecimal(over, 1, 'COMMA', 2, 'POINT')}">$0</b>over-charged: refund claims against vendors</div>
+    <div class="stat"><b class="under" th:text="${'$' + #numbers.formatDecimal(under, 1, 'COMMA', 2, 'POINT')}">$0</b>under-charged: use tax owed to the state</div>
+  </div>
+  <p><span th:each="e : ${byCause}" style="margin-right:14px"><b th:text="${e.value}">0</b> <span th:text="${e.key}">cause</span></span></p>
+</section>
+
+<section>
+  <h2>Upload invoices</h2>
+  <p class="error" th:if="${error}" th:text="${error}">error</p>
+  <form method="post" action="/review" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv,text/csv" required> <button>Review</button>
+  </form>
+  <p class="muted">CSV, one row per line item: <code th:text="${header}">header</code></p>
+</section>
+
+<section>
+  <h2>Findings (<span th:text="${#lists.size(findings)}">0</span>)</h2>
+  <table>
+    <tr><th>Invoice</th><th>Date</th><th>Vendor</th><th>Delivered to</th><th class="num">Charged</th><th class="num">Should be</th><th class="num">Difference</th><th>Cause</th></tr>
+    <tr th:each="f : ${findings}">
+      <td th:text="${f.invoice().id()}">INV</td>
+      <td th:text="${f.invoice().date()}">date</td>
+      <td th:text="${f.invoice().vendor()}">vendor</td>
+      <td><span th:text="${f.shipToName()}">place</span> <code th:text="${f.invoice().shipTo()}">0000</code></td>
+      <td class="num" th:text="${f.invoice().taxCharged()}">0</td>
+      <td class="num" th:text="${f.expected()}">0</td>
+      <td class="num" th:classappend="${f.material()} ? (${f.overcharged()} ? 'over' : 'under') : 'muted'" th:text="${f.difference()}">0</td>
+      <td><span class="badge" th:text="${f.cause().label}">cause</span><br><span class="muted" th:text="${f.explanation()}">why</span></td>
+    </tr>
+  </table>
+</section>
+</main></body></html>
